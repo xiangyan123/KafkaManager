@@ -21,7 +21,7 @@
             </div>
 
             <div style="width:100%;display:flex">
-              <el-form-item label="告警规则名称:" prop="name" style="width:50%">
+              <el-form-item label="告警规则名称1:" prop="name" style="width:50%">
                 <el-input v-model="ruleForm.name" placeholder="请输入告警规则名称"></el-input>
               </el-form-item>
               <!--                    <el-form-item label="所属应用:" prop="region" style="width:50%">-->
