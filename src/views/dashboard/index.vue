@@ -178,6 +178,11 @@ export default {
           //写死集群类型为VPC实例
           this.tableData.map(el => {
             el['groupType'] = 'VPC实例'
+            if(el.status == 1){
+              el.status = "已部署"
+            }else {
+              el.status = "未部署"
+            }
           })
         }
       })
