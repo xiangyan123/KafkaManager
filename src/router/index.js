@@ -33,9 +33,9 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/dashboards',
     children: [{
-      path: 'dashboard',
+      path: 'dashboards',
       name: 'instanceReview',
       component: () => import('@/views/dashboard/index'),
       meta: { title: '实例概览', icon: 'form' }
@@ -89,7 +89,7 @@ export const constantRoutes = [
         path: 'index',
         name: '消息查询',
         component: () => import('@/views/form/selectinfo'),
-        meta: { title: '消息查询', icon: 'el-icon-s-comment' }
+        // meta: { title: '消息查询', icon: 'el-icon-s-comment' }
       }
     ]
   },

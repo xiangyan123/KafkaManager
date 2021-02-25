@@ -1,9 +1,10 @@
 <template>
   <div class="big">
+    <el-page-header title="返回上一级" @back="goBack"></el-page-header>
     <el-tabs v-model="activeName" @tab-click="handleClick" style="left: 30px">
       <el-tab-pane label="按位点查询" name="first">
         <el-select v-model="value1" placeholder="Topic" style="padding-right: 30px">
-          <el-option v-for="item in options" :key="item.topicId" :label="item.topicName" :value="item.topicName"></el-option>
+          <el-option v-for="item in options" :key="item.topicId" :label="item.topicId" :value="item"></el-option>
         </el-select>
         <el-input v-model="input" placeholder="输入分区" style="width: 300px;padding-right: 20px"></el-input>
         <el-input v-model="input1" placeholder="输入位点" style="width: 300px;padding-right: 20px"></el-input>
@@ -33,9 +34,9 @@
       </el-tab-pane>
 
       <!--第二选项卡开始-->
-      <el-tab-pane label="按位点查询" name="second">
-        <el-select v-model="value2" placeholder="Topic" style="padding-right: 30px">
-          <el-option v-for="item in options1" :key="item.topicId" :label="item.topicName" :value="item.topicName"></el-option>
+      <el-tab-pane label="按时间查询" name="second">
+        <el-select v-model="value1" placeholder="Topic" style="padding-right: 30px">
+          <el-option v-for="item in options" :key="item.topicId" :label="item.topicId" :value="item"></el-option>
         </el-select>
         <el-input v-model="input2" placeholder="输入分区" style="width: 300px;padding-right: 20px"></el-input>
         <el-input v-model="input3" placeholder="输入时间，如输入：2021-01-21" style="width: 300px;padding-right: 20px"></el-input>
@@ -93,10 +94,6 @@
           value: '选项1',
           label: '黄金糕'
         }],
-        options1: [{
-          value: '选项1',
-          label: '黄金糕'
-        }],
         activeName: 'first',
         tableData: [{
           partitionName: '',
@@ -117,10 +114,14 @@
       }
     },
     created() {
-      this.options = JSON.parse(sessionStorage.getItem('options'))
-      this.options1 = JSON.parse(sessionStorage.getItem('options'))
+      this.getData()
+      // this.options = JSON.parse(sessionStorage.getItem('options'))
+      // this.options1 = JSON.parse(sessionStorage.getItem('options'))
     },
     methods: {
+      goBack() {
+        this.$router.push({ path: '/dashboards'})
+      },
       searchByTopicTime(page){
         if(this.value2 !== '--选择实例名称--') {
           this.$reqGet('http://219.141.189.24:8082/collectInformationTime', {
@@ -174,20 +175,15 @@
       handleClick(tab, event) {
 
       },
-      // //请求数据的方法
-      // getData() {
-      //   //url接口名字
-      //   this.$reqPost("", {
-      //
-      //     id: this.id //传递参数
-      //   }).then(res => {
-      //     //返回的数据
-      //     if (res.data.data) {
-      //       //form赋值，然后页面上绑定数据
-      //       this.tableData = res.data.data
-      //     }
-      //   });
-      // }
+      getData() {
+        this.$reqGet('http://219.141.189.24:8082/searchTopicName', {
+          clusterId: this.$route.query.id
+        }).then(res => {
+          this.options = res.data.data
+        }).catch(err => {
+          return err
+        })
+      }
 
     }
   }
@@ -195,5 +191,8 @@
 <style>
   .big {
     padding-left: 30px;
+  }
+  .el-page-header{
+    padding-top: 15px;
   }
 </style>

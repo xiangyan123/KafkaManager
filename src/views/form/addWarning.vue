@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push({ path: '/dashboard'})
+      this.$router.push({ path: '/dashboards'})
     },
     handleSizeChange(newSize) {
       this.queryInfo.PageSize = newSize

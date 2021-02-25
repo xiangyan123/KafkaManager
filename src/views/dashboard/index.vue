@@ -4,7 +4,7 @@
       <div>
         实例列表 总计：{{ amount }}
         <span style="padding-left: 80%">
-          <el-button type="primary" size="small" @click="dialogFormVisible = true">接入集群</el-button>
+          <el-button size="small" type="primary" @click="dialogFormVisible = true">接入集群</el-button>
         </span>
       </div>
       <!-- 搜索框部分-->
@@ -16,42 +16,48 @@
         </el-col>
       </el-row>
       <el-table :data="tableData" style="width: 100%">
-        <el-table-column prop="id" label="集群id" width="70"></el-table-column>
-        <el-table-column prop="clusterName" label="实例名称" width="150"></el-table-column>
-        <el-table-column prop="status" label="是否已部署" width="150"></el-table-column>
-        <el-table-column prop="groupType" label="集群类型" width="150"></el-table-column>
-        <el-table-column prop="operation" label="操作" width="600">
+        <el-table-column label="集群id" prop="id" width="70"></el-table-column>
+        <el-table-column label="实例名称" prop="clusterName" width="150"></el-table-column>
+        <el-table-column label="是否已部署" prop="status" width="150"></el-table-column>
+        <el-table-column label="集群类型" prop="groupType" width="150"></el-table-column>
+        <el-table-column label="操作" prop="operation" width="600">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" @click="details(scope.row.id)">实例详情</el-button>
-            <el-button type="primary" size="small" @click="topicManage(scope.row.id)">Topic管理</el-button>
-            <el-button type="primary" size="small" @click="consumerGroupManage(scope.row.id)">consumerGroup管理</el-button>
-            <el-button type="primary" size="small" @click="addWaningManage(scope.row.id)">新增报警</el-button>
+            <el-button size="small" type="primary" @click="details(scope.row.id)">实例详情</el-button>
+            <el-button size="small" type="primary" @click="topicManage(scope.row.id)">Topic管理</el-button>
+            <el-button size="small" type="primary" @click="consumerGroupManage(scope.row.id)">consumerGroup管理
+            </el-button>
+            <el-button size="small" type="primary" @click="searchMessage(scope.row.id)">消息查询</el-button>
+            <el-button size="small" type="primary" @click="addWaningManage(scope.row.id)">新增报警</el-button>
           </template>
 
         </el-table-column>
       </el-table>
 
       <!--点击接入集群弹框-->
-      <el-dialog title="接入集群" :visible.sync="dialogFormVisible">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-          <el-form-item label="集群名称" :label-width="formLabelWidth" required prop="clusterName">
+      <el-dialog :visible.sync="dialogFormVisible" title="接入集群">
+        <el-form ref="ruleForm" :model="ruleForm" :rules="rules">
+          <el-form-item :label-width="formLabelWidth" label="集群名称" prop="clusterName" required>
             <el-input v-model="ruleForm.clusterName" autocomplete="off" placeholder="请输入集群名称"></el-input>
           </el-form-item>
 
-          <el-form-item label="zookeeper地址" :label-width="formLabelWidth" required prop="zookeeper">
-            <el-input type="textarea" v-model="ruleForm.zookeeper" autocomplete="off" placeholder="请输入zookeeper地址"></el-input>
+          <el-form-item :label-width="formLabelWidth" label="zookeeper地址" prop="zookeeper" required>
+            <el-input v-model="ruleForm.zookeeper" autocomplete="off" placeholder="请输入zookeeper地址" type="textarea"
+            ></el-input>
           </el-form-item>
 
-          <el-form-item label="bootstrapServers" :label-width="formLabelWidth" required prop="bootstrapServers">
-            <el-input type="textarea" v-model="ruleForm.bootstrapServers" autocomplete="off" placeholder="请输入bootstrapServers"></el-input>
+          <el-form-item :label-width="formLabelWidth" label="bootstrapServers" prop="bootstrapServers" required>
+            <el-input v-model="ruleForm.bootstrapServers" autocomplete="off" placeholder="请输入bootstrapServers"
+                      type="textarea"
+            ></el-input>
           </el-form-item>
-          <el-form-item label="kafka版本" :label-width="formLabelWidth" required prop="kafkaVersion">
+          <el-form-item :label-width="formLabelWidth" label="kafka版本" prop="kafkaVersion" required>
             <el-input v-model="ruleForm.kafkaVersion" autocomplete="off" placeholder="请输入集群名称"></el-input>
           </el-form-item>
 
-          <el-form-item label="安全协议" :label-width="formLabelWidth" prop="securityProperties">
-            <el-input type="textarea" v-model="ruleForm.securityProperties" autocomplete="off"
-                      placeholder="请输入安全协议">
+          <el-form-item :label-width="formLabelWidth" label="安全协议" prop="securityProperties">
+            <el-input v-model="ruleForm.securityProperties" autocomplete="off" placeholder="请输入安全协议"
+                      type="textarea"
+            >
             </el-input>
           </el-form-item>
         </el-form>
@@ -72,15 +78,15 @@ export default {
   name: 'Dashboard',
   data() {
     return {
-      input:'',
-      show:false,
+      input: '',
+      show: false,
       dialogFormVisible: false,
       formLabelWidth: '140px',
       ruleForm: {
         clusterName: '',
         zookeeper: '',
         bootstrapServers: '',
-        kafkaVersion:'',
+        kafkaVersion: '',
         securityProperties: ''
       },
       rules: {
@@ -106,7 +112,7 @@ export default {
         }]
       },
       tableData: [{
-        id:0,
+        id: 0,
         clusterName: '',
         status: '',
         groupType: 'VPC实例'
@@ -125,15 +131,18 @@ export default {
     this.getData()
   },
   methods: {
+    searchMessage(id) {
+      this.$router.push({ path: '/form/index', query: { id } })
+    },
     accessCluster(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.create1()
         } else {
-          console.log('error submit!!');
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     create1() {
       //url接口名字
@@ -147,47 +156,66 @@ export default {
       })
       this.dialogFormVisible = false
     },
-    topicManage(id){
-      this.$router.push({name:'Topic',query: {id}})
+    topicManage(id) {
+      this.$router.push({ name: 'Topic', query: { id } })
     },
-    consumerGroupManage(id){
-      this.$router.push({name:'consumer_Group',query: {id}})
+    consumerGroupManage(id) {
+      this.$router.push({ name: 'consumer_Group', query: { id } })
     },
     details(id) {
       this.$router.push({ name: 'detial', query: { id } })
     },
-    addWaningManage(id){
+    addWaningManage(id) {
       this.$router.push({ name: 'addWarning', query: { id } })
     },
     getData() {
       this.$reqGet('http://219.141.189.24:8082/cluster_list', {
-        pageNo:1,
-        pageSize:5,
+        pageNo: 1,
+        pageSize: 5
       }).then(res => {
         if (res.data.data) {
           this.tableData = res.data.data.List
           //写死集群类型为VPC实例
-          this.tableData.map(el=>{
-            el["groupType"] = 'VPC实例'
+          this.tableData.map(el => {
+            el['groupType'] = 'VPC实例'
           })
         }
       })
     },
     searchByTopicName(page) {
-      this.$reqGet('http://219.141.189.24:8082/cluster_list', {
-        pageNo:1,
-        pageSize:5,
-        clusterName:this.input
-      }).then(res => {
-        if (res.data.data) {
-          this.tableData = res.data.data.List
-          //写死集群类型为VPC实例
-          this.tableData.map(el=>{
-            el["groupType"] = 'VPC实例'
-          })
-        }
-      })
-    },
+      let num = this.input.split(' ').join('').length
+      if (this.input != '' && num > 0) {
+        this.$reqGet('http://219.141.189.24:8082/cluster_list', {
+          pageNo: 1,
+          pageSize: 5,
+          clusterName: this.input
+        }).then(res => {
+          if (res.data.data.List.length > 0) {
+            this.tableData = res.data.data.List
+            this.tableData.map(el => {
+              el['groupType'] = 'VPC实例'
+            })
+            this.$message({
+              message: '查询成功',
+              type: 'success',
+              duration: 1200
+            })
+          } else {
+            this.$message({
+              message: '未查询到数据',
+              type: 'error',
+              duration: 2000
+            })
+          }
+        })
+      } else {
+        this.$message({
+          message: '请输入实例名称',
+          type: 'error',
+          duration: 1200
+        })
+      }
+    }
   }
 }
 </script>

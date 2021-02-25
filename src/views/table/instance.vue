@@ -186,7 +186,7 @@ export default {
   },
   methods: {
     goBack() {
-      this.$router.push({ path: '/dashboard'})
+      this.$router.push({ path: '/dashboards'})
     },
     onSubmit() {
       console.log('submit!')
@@ -198,11 +198,20 @@ export default {
         //传递参数
         clusterId:this.$route.query.id
       }).then(res => {
-        //返回的数据
         if (res.data.data) {
-          //form赋值，然后页面上绑定数据
           this.form = res.data.data
+          this.$message({
+            message: '查询成功',
+            type: 'success',
+            duration: 900
+          })
         }
+      }).catch(err=>{
+        this.$message({
+          message: err,
+          type: 'error',
+          duration: 2000
+        })
       })
     }
 
