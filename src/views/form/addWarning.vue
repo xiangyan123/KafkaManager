@@ -105,6 +105,51 @@ export default {
         pageSize: this.queryInfo.PageSize
       }).then(res => {
         this.tableDatass = res.data.data.List
+        this.tableDatass.map(el=>{
+              if(el.monitorItem == "online-kafka-topic-msgIn"){
+                el.monitorItem = 'Topic消息入站速率(message)'
+              }else if(el.monitorItem == "online-kafka-topic-bytesIn"){
+                el.monitorItem = 'Topic消息入站速率(Byte)'
+              }else if(el.monitorItem == "online-kafka-topic-fetch-throttled"){
+                el.monitorItem = 'Topic发送请求失败速率'
+              }else if(el.monitorItem == "online-kafka-consumer-lag"){
+                el.monitorItem = '消费者组滞后程度'
+              }
+              if(el.alarmLevel == 1){
+                el.alarmLevel="低"
+              } else if(el.alarmLevel == 2){
+                el.alarmLevel="中"
+              } else if(el.alarmLevel == 3){
+                el.alarmLevel="高"
+              }
+              if(el.monitoringTime == 1){
+                el.monitoringTime ='1分钟'
+              }else if(el.monitoringTime == 2){
+                el.monitoringTime="5分钟"
+              } else if(el.monitoringTime == 3){
+                el.monitoringTime="15分钟"
+              }else if(el.monitoringTime == 4){
+                el.monitoringTime="30分钟"
+              } else if(el.monitoringTime == 6){
+                el.monitoringTime="60分钟"
+              }
+              if(el.informWay == 1){
+                el.informWay = 'QQ群'
+              }
+              if(el.compareRules == 1){
+                el.compareRules = '大于'
+              }else if(el.compareRules == 2){
+                el.compareRules = '小于'
+              }else if(el.compareRules == 3){
+                el.compareRules = '等于'
+              }else if(el.compareRules == 4){
+                el.compareRules = '大于等于'
+              }else if(el.compareRules == 5){
+                el.compareRules = '小于等于'
+              }else{
+                el.compareRules='不等于'
+              }
+            })
         this.queryInfo = res.data.data
         this.TotalCount = res.data.data.TotalCount
       }).catch(err => {
