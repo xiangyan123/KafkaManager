@@ -4,7 +4,7 @@
     <el-tab-pane label="实例" name="first">
       <el-button type="primary">查看报警信息</el-button>
 
-      <el-table :data="tableData" style="width: 100%">
+      <el-table :data="tableData" style="width: 100%;">
         <el-table-column prop="slid" label="实例ID" width="180"></el-table-column>
         <el-table-column prop="bjx" label="是否配置报警项" width="180"></el-table-column>
         <el-table-column prop="bjqk" label="报警项情况" width="180"></el-table-column>
