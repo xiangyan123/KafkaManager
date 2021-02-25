@@ -147,7 +147,7 @@ export default {
               }else if(el.compareRules == 5){
                 el.compareRules = '小于等于'
               }else{
-                el.compareRules='不等于'
+                el.compareRules='不等于1'
               }
             })
         this.queryInfo = res.data.data
